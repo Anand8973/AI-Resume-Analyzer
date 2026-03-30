@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Analysis Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="page">
+        <div class="container">
+            <div class="header-box">
+                <h1>AI Resume Analyzer</h1>
+                <p class="subtitle">Visual report, ATS check, and smart multi-role suggestions</p>
+            </div>
+
+            <div class="score-card">
+                <h2>Final Score</h2>
+                <div class="big-score">{{ result.score }}%</div>
+                <p><strong>Best Matched Role:</strong> {{ result.detected_role }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Score Visualization</h3>
+
+                <div class="chart-block">
+                    <div class="chart-label-row">
+                        <span>Final Score</span>
+                        <span>{{ result.score }}%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-main score-fill" data-width="{{ result.score }}"></div>
+                    </div>
+                </div>
+
+                <div class="chart-block">
+                    <div class="chart-label-row">
+                        <span>Keyword Score</span>
+                        <span>{{ result.keyword_score }}%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-keyword score-fill" data-width="{{ result.keyword_score }}"></div>
+                    </div>
+                </div>
+
+                <div class="chart-block">
+                    <div class="chart-label-row">
+                        <span>Important Skills Score</span>
+                        <span>{{ result.important_score }}%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-skill score-fill" data-width="{{ result.important_score }}"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Top Matching Roles</h3>
+                {% for role in result.top_roles %}
+                <div class="chart-block">
+                    <div class="chart-label-row">
+                        <span>{{ role.role }}</span>
+                        <span>{{ role.score }}%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-role score-fill" data-width="{{ role.score }}"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="grid">
+                <div class="card">
+                    <h3>Resume Sections</h3>
+                    <ul class="section-list">
+                        <li>Education: <strong>{{ "Yes" if result.sections.education else "No" }}</strong></li>
+                        <li>Skills: <strong>{{ "Yes" if result.sections.skills else "No" }}</strong></li>
+                        <li>Projects: <strong>{{ "Yes" if result.sections.projects else "No" }}</strong></li>
+                        <li>Experience: <strong>{{ "Yes" if result.sections.experience else "No" }}</strong></li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>Quick Summary</h3>
+                    <p><strong>Matched Keywords:</strong> {{ result.matched_keywords|length }}</p>
+                    <p><strong>Missing Keywords:</strong> {{ result.missing_keywords|length }}</p>
+                    <p><strong>Best Role:</strong> {{ result.detected_role }}</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Matched Keywords</h3>
+                <div class="tag-box">
+                    {% for word in result.matched_keywords %}
+                        <span class="tag success">{{ word }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Missing Keywords</h3>
+                <div class="tag-box">
+                    {% for word in result.missing_keywords %}
+                        <span class="tag danger">{{ word }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Smart Suggestions</h3>
+                <ul>
+                    {% for suggestion in result.suggestions %}
+                        <li>{{ suggestion }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>ATS Tips</h3>
+                <ul>
+                    {% for tip in ats_tips %}
+                        <li>{{ tip }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="bottom-link">
+                <a href="/">Analyze Another Resume</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const fills = document.querySelectorAll(".score-fill");
+        fills.forEach(fill => {
+            const width = fill.getAttribute("data-width");
+            fill.style.width = width + "%";
+        });
+    </script>
+</body>
+</html>

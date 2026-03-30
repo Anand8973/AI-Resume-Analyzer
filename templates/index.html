@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="page">
+        <div class="container">
+            <div class="hero-card">
+                <h1>AI Resume Analyzer</h1>
+                <p class="subtitle">
+                    Upload your resume, paste the job description, and get ATS score,
+                    keyword analysis, charts, and smart role-based suggestions.
+                </p>
+            </div>
+
+            <div class="form-card">
+                <h2>Upload Details</h2>
+
+                <form action="/analyze" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="resume">Upload Resume (PDF or DOCX)</label>
+                        <input type="file" id="resume" name="resume" accept=".pdf,.docx" required>
+                        <small class="helper-text">Supported formats: PDF, DOCX</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="job_description">Paste Job Description</label>
+                        <textarea
+                            id="job_description"
+                            name="job_description"
+                            rows="12"
+                            placeholder="Paste the full job description here..."
+                            required
+                        ></textarea>
+                        <small class="helper-text">Tip: Paste the full JD for better keyword matching.</small>
+                    </div>
+
+                    <button type="submit" class="primary-btn">Analyze Resume</button>
+                </form>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>What you get</h3>
+                    <ul>
+                        <li>Resume match score</li>
+                        <li>Keyword match analysis</li>
+                        <li>Missing skill detection</li>
+                        <li>ATS improvement tips</li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <h3>Best for</h3>
+                    <ul>
+                        <li>Internship applications</li>
+                        <li>College placements</li>
+                        <li>Job-specific resume tuning</li>
+                        <li>ATS optimization</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
